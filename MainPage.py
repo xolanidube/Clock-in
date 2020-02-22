@@ -31,8 +31,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from PyQt5.QtWidgets import QMessageBox
-
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -56,7 +54,6 @@ from datetime import datetime
 from datetime import timedelta
 import face as f
 import time
-
 import numpy as np
 import os
 from os import listdir
@@ -117,7 +114,7 @@ from distutils.command import install
 import shutil
 from sklearn.naive_bayes import GaussianNB
 
-
+from sklearn.svm import SVC
 
 from sklearn.model_selection import learning_curve
 from sklearn.model_selection import ShuffleSplit
@@ -155,19 +152,11 @@ def dChar(string):
     return bool(re.search("[^a-zA-Z]", string))
 
 def Connect(host_, user_, passwd_, database_):
-    try:
-        conn = mysql.connector.connect(
-            host=host_, user=user_, passwd=passwd_, database=database_
-        )
+    conn = mysql.connector.connect(
+        host=host_, user=user_, passwd=passwd_, database=database_
+    )
 
-        return conn
-    
-    except Exception as e:
-        #QMessageBox.about("Error", "Unable to connect to server stopping application....")
-        print(e)
-        
-        return 
-        
+    return conn
 
 
 class auth(FloatLayout):
@@ -187,7 +176,7 @@ class auth(FloatLayout):
             font_size="28sp",
         )
         self.compare = Image(
-            source="C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg"
+            source="C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
         )
         self.rec = False
         self.face_recognition = f.Recognition()
@@ -293,7 +282,7 @@ class auth(FloatLayout):
 
         self.compare.pos_hint = {"x": 0.1, "y": 0.24}
         self.recognized = Image(
-            source="C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg"
+            source="C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
         )
 
         self.recognized.allow_stretch = False
@@ -403,10 +392,8 @@ class auth(FloatLayout):
         for wid in widgets:
             self.add_widget(wid)
 
-        try:
-            self.capture = cv2.VideoCapture(1)
-        except:
-            self.capture = cv2.VideoCapture(0)
+        
+        self.capture = cv2.VideoCapture(0)
         
         #finally:
         #    self.pop("Error : Camera Failer", "COULDN'T OPEN CAMERA PLEASE CONNECT A CAMERA")
@@ -657,7 +644,7 @@ class auth(FloatLayout):
 
                                 name = face.name + "_" + str(random.randint(1000, 9999))
                                 cv2.imwrite(
-                                    "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Unrecognized_blobs//"
+                                    "C://Users//SELINA//Project Clock-in//Unrecognized_blobs//"
                                     + str(name)
                                     + ".png",
                                     resized,
@@ -667,7 +654,7 @@ class auth(FloatLayout):
 
                                 self.clear_image()
                                 self.recognized.source = (
-                                    "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Unrecognized_blobs//"
+                                    "C://Users//SELINA//Project Clock-in//Unrecognized_blobs//"
                                     + name
                                     + ".png"
                                 )
@@ -737,7 +724,7 @@ class auth(FloatLayout):
                             )
                             ###cv2.imshow("this", resized)
                             path = (
-                                "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Clock_in//employee_data//train_aligned//"
+                                "C://Users//SELINA//Project Clock-in//Clock_In//employee_data//train_aligned//"
                                 + face.name
                                 + "//"
                             )
@@ -831,10 +818,10 @@ class auth(FloatLayout):
             ###print("No Faces detected.")
             self.rec = False
             self.compare.source = (
-                "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg"
+                "C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
             )
             self.recognized.source = (
-                "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg"
+                "C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
             )
             self.count = 0
 
@@ -2266,7 +2253,6 @@ class TrainAndTest(FloatLayout):
                  label="Cross-validation score")
     
         plt.legend(loc="best")
-        plt.show()
         return plt
     
     def align(self):
@@ -2296,7 +2282,7 @@ class TrainAndTest(FloatLayout):
 
         self.now = "Aligning Images"
         app_.clockin.speak(self.now)
-        time.sleep(8)
+        time.sleep(5)
         sleep(random.random())
 
         output_dir = os.path.expanduser(self.txtoutput.text)
@@ -2308,7 +2294,7 @@ class TrainAndTest(FloatLayout):
         print("Creating networks and loading parameters")
         self.now = "Creating networks and loading parameters"
         app_.clockin.speak(self.now)
-        time.sleep(8)
+        time.sleep(5)
         with tf.Graph().as_default():
             gpu_options = tf.compat.v1.GPUOptions(
                 per_process_gpu_memory_fraction=self.gpu_memory_fraction
@@ -2322,7 +2308,7 @@ class TrainAndTest(FloatLayout):
                 pnet, rnet, onet = detect_face.create_mtcnn(sess, None)
 
         minsize = 20  # minimum size of face
-        threshold = [0.6, 0.7, 0.8]  # three steps's threshold
+        threshold = [0.6, 0.7, 0.7]  # three steps's threshold
         factor = 0.709  # scale factor
 
         random_key = np.random.randint(0, high=99999)
@@ -2461,7 +2447,7 @@ class TrainAndTest(FloatLayout):
         print("Number of successfully aligned images: %d" % nrof_successfully_aligned)
         app_.clockin.speak("Number of successfully aligned images: %d" % nrof_successfully_aligned)
         time.sleep(8)
-        self.now = "Alignment Done."
+        self.now = "Alignement Done."
         app_.clockin.speak(self.now)
         time.sleep(8)
        
@@ -2522,9 +2508,7 @@ class TrainAndTest(FloatLayout):
                     + ".,"
                     + "Number of images: %d" % len(paths)
                 )
-                app_.clockin.speak("The Number of classes: %d" % len(dataset)
-                    + " and the "
-                    + "Number of images: %d" % len(paths))
+                app_.clockin.speak(self.now)
                 time.sleep(8)
                 # Load the model
                 print("Loading feature extraction model")
@@ -2550,9 +2534,8 @@ class TrainAndTest(FloatLayout):
                 print("Calculating features for images")
                 self.now = "Calculating features for images. Please wait"
                 app_.clockin.speak(self.now)
-                time.sleep(8)
+                time.sleep(4)
                 
-                start = time.time()
                 nrof_images = len(paths)
                 nrof_batches_per_epoch = int(
                     math.ceil(1.0 * nrof_images / self.batch_size)
@@ -2572,11 +2555,7 @@ class TrainAndTest(FloatLayout):
                     emb_array[start_index:end_index, :] = sess.run(
                         embeddings, feed_dict=feed_dict
                     )
-                end = time.time() - start
-                self.now = "Calculating features for images done. Process took %.2f seconds." % end
-                app_.clockin.speak(self.now)
-                time.sleep(8)
-                
+
                 classifier_filename_exp = os.path.expanduser(self.txtClassifier.text)
 
                 if self.txtmode.text == "TRAIN" and self.btnTrain.text == "Train":
@@ -2586,18 +2565,12 @@ class TrainAndTest(FloatLayout):
                     app_.clockin.speak(self.now)
                     time.sleep(8)
                     model = SVC(kernel="linear", probability=True)
-                    try:
-                        title = "Learning Curves (SVC linear)"
-                        cv = ShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
-                        self.plot_learning_curve(model, title, emb_array, labels, ylim=(0.7, 1.01), cv=cv, n_jobs=4).show
-                        #plt.show()
-                    except:
-                        print("Couldn't display graph")
-                    
                     #model = GaussianNB()
                     model.fit(emb_array, labels)
+                    title = "Learning Curves (SVC linear)"
+                    cv = ShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
+                    self.plot_learning_curve(model, title, emb_array, labels, ylim=(0.7, 1.01), cv=cv, n_jobs=4)
                     
-                
                 
 
                     # Create a list of class names
@@ -2666,14 +2639,14 @@ class TrainAndTest(FloatLayout):
                         app_.clockin.cursor.execute(query)
 
                         app_.clockin.conn.commit()
-                        time.sleep(8)
+                        time.sleep(7)
                         ind+=1
                     bcp = best_class_probabilities
                     bcplen = len(best_class_probabilities)
                     self.accuracy = np.divide(np.sum(bcp), bcplen)
                     #self.accuracy = np.mean(np.equal(best_class_indices, labels))
                     print("Accuracy: %.3f" % self.accuracy)
-                    app_.clockin.speak("Accuracy: %.3f percent" % (self.accuracy *100))
+                    app_.clockin.speak("Accuracy: %.3f" % (self.accuracy *100))
                     time.sleep(8)
                     app_.clockin.speak("I'm done testing your classifier %s, and I have saved it." % classifier_filename_exp)
 
@@ -2766,13 +2739,13 @@ class CollectData(FloatLayout):
         self.nw = ""
         ###self.face_recognition = f.Recognition()
         self.user = Image(
-            source="C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg"
+            source="C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
         )
         self.trainingSample = Image(
-            source="C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg"
+            source="C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
         )
         self.testSample = Image(
-            source="C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg"
+            source="C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
         )
 
         self.lblTrain = Label(
@@ -3226,11 +3199,11 @@ class CollectData(FloatLayout):
                 time.sleep(3)
                 self.nw = "No Activity"
         path = (
-            "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Clock_in//employee_data//train_raw//"
+            "C://Users//SELINA//Project Clock-in//Clock_In//employee_data//train_raw//"
             + self.txtclass_name.text
             + "//"
         )
-        _ = "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Clock_in//employee_data//"
+        _ = "C://Users//SELINA//Project Clock-in//Clock_In//employee_data//"
         pic = self.getRandomImage(path)
         rndpic = path + pic
 
@@ -3246,7 +3219,7 @@ class CollectData(FloatLayout):
         Clock.schedule_once(
             partial(
                 self.default,
-                "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//data//Images//face_avatar.jpg",
+                "C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg",
             )
         )
         self.txtVar.text = ""
@@ -3574,7 +3547,7 @@ class Employee(FloatLayout):
             print("Error please start your server")
         self.cursor = self.conn.cursor()
         self.user = Image(
-            source="C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//employee_blobs//default.png"
+            source="C://Users//SELINA//Project Clock-in//employee_blobs//default.png"
         )
 
         self.lbl = Label(
@@ -4043,7 +4016,7 @@ class Employee(FloatLayout):
                     cv2.imshow("Capturing", frame)
                     key = cv2.waitKey(1)
                     file = (
-                        "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//employee_blobs//%s.jpg"
+                        "C://Users//SELINA//Project Clock-in//employee_blobs//%s.jpg"
                         % self.txtemp_name.text
                     )
                     if key == ord("s") or faces is not None:
@@ -4204,16 +4177,16 @@ class Employee(FloatLayout):
         try:
             os.remove(self.txtemp_blobpath.text)
             shutil.rmtree(
-                f"C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Clock_in//employee_data//train_raw//{self.txtemp_name.text}"
+                f"C://Users//SELINA//Project Clock-in//Clock_In//employee_data//train_raw//{self.txtemp_name.text}"
             )
             shutil.rmtree(
-                f"C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Clock_in//employee_data//test_raw//{self.txtemp_name.text}"
+                f"C://Users//SELINA//Project Clock-in//Clock_In//employee_data//test_raw//{self.txtemp_name.text}"
             )
             shutil.rmtree(
-                f"C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Clock_in//employee_data//train_aligned//{self.txtemp_name.text}"
+                f"C://Users//SELINA//Project Clock-in//Clock_In//employee_data//train_aligned//{self.txtemp_name.text}"
             )
             shutil.rmtree(
-                f"C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//Clock_in//employee_data//test_aligned//{self.txtemp_name.text}"
+                f"C://Users//SELINA//Project Clock-in//Clock_In//employee_data//test_aligned//{self.txtemp_name.text}"
             )
         except:
             print("Error couldnt delete info")
@@ -4294,7 +4267,7 @@ class Employee(FloatLayout):
         self.txtemp_surname.text = ""
         self.txtsearch.text = ""
         self.user.source = (
-            "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//employee_blobs//default.png"
+            "C://Users//SELINA//Project Clock-in//employee_blobs//default.png"
         )
         self.pop("INFORMATION : CLEARED", "everything was successfully clearly")
 
@@ -4311,7 +4284,7 @@ class Employee(FloatLayout):
         self.txtemp_surname.text = ""
         self.txtsearch.text = ""
         self.user.source = (
-            "C://Users//GabhaDi//eclipse-workspace2//Project Clock-in//employee_blobs//default.png"
+            "C://Users//SELINA//Project Clock-in//employee_blobs//default.png"
         )
         self.pop("INFORMATION : CLEARED", "everything was successfully clearly")
 
