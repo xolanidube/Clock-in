@@ -125,8 +125,8 @@ engine.setProperty("rate", 150)
 engine.setProperty("volume", 1)
 Clock.max_iteration = 200
 port = 465
-paswrd = "9802185362084XOLANIDUBE@x"
-emil = "projectclockin@gmail.com"
+paswrd = "YOUR_EMAIL_PASSWORD_HERE"
+emil = "YOUR_EMAIL_ADDRESS_HERE"
 # context = ssl.create_default_context()
 
 # s = smtplib.SMTP(host='smtp.gmail.com', port=587)
@@ -176,7 +176,7 @@ class auth(FloatLayout):
             font_size="28sp",
         )
         self.compare = Image(
-            source="C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
+            source="..//data//Images//face_avatar.jpg"
         )
         self.rec = False
         self.face_recognition = f.Recognition()
@@ -282,7 +282,7 @@ class auth(FloatLayout):
 
         self.compare.pos_hint = {"x": 0.1, "y": 0.24}
         self.recognized = Image(
-            source="C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
+            source="..//data//Images//face_avatar.jpg"
         )
 
         self.recognized.allow_stretch = False
@@ -644,7 +644,7 @@ class auth(FloatLayout):
 
                                 name = face.name + "_" + str(random.randint(1000, 9999))
                                 cv2.imwrite(
-                                    "C://Users//SELINA//Project Clock-in//Unrecognized_blobs//"
+                                    "..//Unrecognized_blobs//"
                                     + str(name)
                                     + ".png",
                                     resized,
@@ -654,7 +654,7 @@ class auth(FloatLayout):
 
                                 self.clear_image()
                                 self.recognized.source = (
-                                    "C://Users//SELINA//Project Clock-in//Unrecognized_blobs//"
+                                    "..//Unrecognized_blobs//"
                                     + name
                                     + ".png"
                                 )
@@ -724,7 +724,7 @@ class auth(FloatLayout):
                             )
                             ###cv2.imshow("this", resized)
                             path = (
-                                "C://Users//SELINA//Project Clock-in//Clock_In//employee_data//train_aligned//"
+                                "..//employee_data//train_aligned//"
                                 + face.name
                                 + "//"
                             )
@@ -818,10 +818,10 @@ class auth(FloatLayout):
             ###print("No Faces detected.")
             self.rec = False
             self.compare.source = (
-                "C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
+                "..//data//Images//face_avatar.jpg"
             )
             self.recognized.source = (
-                "C://Users//SELINA//Project Clock-in//data//Images//face_avatar.jpg"
+                "..//data//Images//face_avatar.jpg"
             )
             self.count = 0
 
