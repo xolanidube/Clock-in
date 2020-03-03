@@ -1,7 +1,7 @@
 # coding=utf-8
 """Face Detection, Recognition and Verification inside a gui includes  age, gender, object and race or ethnicity recognition """
 # MIT License
-#
+#By
 # Copyright (c) 2019 Xolani Dube
 #
 # This is the work of Xolani Dube remodelled into a
@@ -133,7 +133,7 @@ emil = "YOUR_EMAIL_ADDRESS_HERE"
 
 # s.starttls()
 ##s.connect(host='smtp.gmail.com', port=587)
-# s.login("projectclockin@gmail.com", "9802185362084XOLANIDUBE@x")
+# s.login("YOUR_EMAIL_ADDRESS_HERE", "YOUR_EMAIL_PASSWORD_HERE")
 
 
 server = "127.0.0.1"
@@ -142,7 +142,7 @@ password = ""
 database = "employees"
 conn = None
 
-USA = "+12027514983"
+USA = "TWILIO_NUMBER_HERE"
 
 
 def cdigit(string):
